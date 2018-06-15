@@ -1,32 +1,31 @@
-##
-## Makefile for makefile in /home/the.psychopath/delivery/CPool_rush2
-## 
-## Made by Alexandre Di.rosa
-## Login   <the.psychopath@epitech.net>
-## 
-## Started on  Sat Oct 15 16:20:13 2016 Alexandre Di.rosa
-## Last update Sun Dec  4 23:04:36 2016 Alexandre Di.rosa
-##
+#******************************************************************************#
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/03/07 16:55:47 by adi-rosa          #+#    #+#              #
+#    Updated: 2018/04/10 13:37:42 by adi-rosa         ###   ########.fr        #
+#                                                                              #
+#******************************************************************************#
 
-MAKE	=	make -C ./lib/my/
+MAKE	=	make -C ./libft/
 
 RM	=	rm -f
 
-SRC	=	my_ls.c	\
-		get_the.c	\
-		names_sorter.c	\
-		decapitalize.c	\
-		recursive.c	\
-		long_format.c	\
-		aff.c
+SRC	=	main.c	\
+			flags.c	\
+			check.c	\
 
-LIB	=	-L./lib/my -lmy
+
+LIB	=	-L./libft/ -lft
 
 OBJ	=	$(SRC:.c=.o)
 
 INCLUDE =	-I.
 
-NAME	=	my_ls
+NAME	=	ft_ls
 
 all:	$(NAME)
 
@@ -35,12 +34,13 @@ $(NAME):	$(OBJ)
 	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
 
 
-clean: 
+clean:
 	$(RM) $(OBJ)
 
 fclean: clean
-	$(RM) $(OBJ)
+	$(RM) $(NAME)
+	$(MAKE) fclean
 
 re: fclean all
 
- .PHONY: all clean fclean re
+.PHONY: all clean fclean re
