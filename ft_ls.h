@@ -38,6 +38,9 @@ int   fill(struct s_data *data, char *file, char *file_dirent);
 int   is_file(char *name);
 int   is_dir(char *name);
 void  aff_list(struct s_data *data, char *flags);
-int ft_ls(char **dires, char *flags);
+int   ft_ls(char **dires, char *flags);
+char *get_path_file(char *name, char *repo, char *d_name);
+int fill_data(struct s_data *data, char *name, char *flags, char *repo);
+int print_files(char **files, char *flags);
 
 #endif

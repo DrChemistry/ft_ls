@@ -14,9 +14,12 @@ MAKE	=	make -C ./libft/
 
 RM	=	rm -f
 
-SRC	=	main.c	\
-			flags.c	\
-			check.c	\
+SRC	=	main.c		\
+			flags.c		\
+			check.c		\
+			fill.c		\
+			aff.c			\
+			parsing.c	\
 
 
 LIB	=	-L./libft/ -lft
@@ -32,7 +35,6 @@ all:	$(NAME)
 $(NAME):	$(OBJ)
 	$(MAKE)
 	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
-
 
 clean:
 	$(RM) $(OBJ)
