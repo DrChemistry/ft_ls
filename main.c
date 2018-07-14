@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 12:13:57 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/08 10:48:13 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/14 18:23:36 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
 	{
 		if (ft_strcmp(data->name, ".") != 0 && ft_strcmp(data->name, "..") != 0)
 		{
-		 	if (S_ISDIR(data->mode))
+			if (S_ISDIR(data->mode))
 			{
-				printf("recusive name verif[%s]\n", data->name);
 				if (!(dires[0] = get_path_file(curr_dires, repo, data->name)))
 					return (FAILURE);
+				ft_putchar('\n');
+				ft_putstr(dires[0]);
+				ft_putstr(":\n");
 				if (ft_ls(dires, flags) == FAILURE)
 					return (FAILURE);
 			}
@@ -48,18 +50,15 @@ int	ft_ls(char **dires, char *flags)
 {
 	int				x;
 	struct s_data	*data;
-	char			*repo;
 
 	x = 0;
-	repo = "/";
 	while (dires[x])
 	{
 		if (!(data = malloc(sizeof(struct s_data))))
 			return (FAILURE);
 		data->last = NULL;
-		if (fill_data(data, dires[x], flags, repo) == FAILURE)
+		if (fill_data(data, dires[x], flags, "/") == FAILURE)
 			return (FAILURE);
-		//printf("dires: %s\nlist_name: %s\n", dires[x], data->name);
 		if ((x == 0 && dires[x + 1]) || x > 0)
 		{
 			ft_putstr(dires[x]);
@@ -96,8 +95,7 @@ int	separate_file(char **name, char *flags, int size)
 			files[c++] = name[x++];
 	files[c] = NULL;
 	dires[b] = NULL;
-	if (print_files(files, flags) == FAILURE
-			|| ft_ls(dires, flags) == FAILURE)
+	if (ft_ls(dires, flags) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -110,11 +108,10 @@ int	main(int ac, char **av)
 	char	**files;
 
 	x = 1;
-	if ((x = flags_gestion(flags, av, x)) == FAILURE)
+	if ((x = flags_gestion(flags, av, x)) == FAILURE
+			|| !(files = malloc(sizeof(char *) * (ac + 1))))
 		return (FAILURE);
 	b = 0;
-	if (!(files = malloc(sizeof(char *) * (ac + 1))))
-		return (FAILURE);
 	while (av[x])
 	{
 		if (is_dir(av[x]) == SUCCESS || is_file(av[x]) == SUCCESS)

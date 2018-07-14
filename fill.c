@@ -46,6 +46,7 @@ int		fill(struct s_data *data, char *file, char *file_dirent)
 		return (FAILURE);
 	data->nb_links = file_stat.st_nlink;
 	data->size = file_stat.st_size;
+	data->blocks = file_stat.st_blocks;
 	if (!(owneruid = getpwuid(file_stat.st_uid)))
 		return (FAILURE);
 	if (!(grpuid = getgrgid(file_stat.st_gid)))
@@ -59,7 +60,7 @@ int		fill(struct s_data *data, char *file, char *file_dirent)
 	return (SUCCESS);
 }
 
-int		fill_data(struct s_data *data, char *name, char *flags, char *repo)
+int		fill_data(t_data *data, char *name, char *flags, char *repo)
 {
 	DIR				*dir;
 	struct dirent	*file_dirent;

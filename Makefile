@@ -37,6 +37,7 @@ $(NAME):	$(OBJ)
 	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
 
 clean:
+	$(MAKE) clean
 	$(RM) $(OBJ)
 
 fclean: clean
