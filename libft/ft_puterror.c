@@ -6,13 +6,13 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 12:18:59 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/03/12 12:19:58 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/14 18:33:56 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int ft_puterror(char *str, int x)
+int	ft_puterror(char *str, int x)
 {
 	ft_putstr(str);
 	return (x);

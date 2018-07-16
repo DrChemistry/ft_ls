@@ -10,13 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "ft_ls.h"
 
 void	ascii_sort(struct s_data *data)
 {
 	struct s_data	*tmp;
 
-	while (data->next->next)
+	while (data && data->next && data->next->next)
 	{
 		if (ft_strcmp(data->name, data->next->name) > 0)
 		{
@@ -43,7 +44,7 @@ void	time_sort(struct s_data *data)
 
 	while (data->next->next)
 	{
-		if (data->time < data->next->time)
+		if (data->file_stat.st_mtime < data->next->file_stat.st_mtime)
 		{
 			tmp = data->next;
 			tmp->last = data->last;
@@ -64,9 +65,16 @@ void	time_sort(struct s_data *data)
 
 void	reverse_list(struct s_data *data)
 {
+	t_data *temp;
+
 	while (data->next)
 	{
-		data = data->next;
+		printf("%s\n", data->name);
+		read(0, NULL, 1024);
+		temp = data->last;
+		data->last = data->next;
+		data->next = temp;
+		data = data->last;
 	}
 }
 

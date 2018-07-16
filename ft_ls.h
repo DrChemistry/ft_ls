@@ -14,6 +14,7 @@
 # define FT_LS_H
 
 # include <stdio.h>
+# include <sys/stat.h>
 # include "./libft/libft.h"
 
 # define FAILURE -1
@@ -21,16 +22,12 @@
 
 typedef struct	s_data
 {
-	int				nb_links;
 	char			*owner;
 	char			*grp;
-	int				size;
-	long			time;
 	char			*name;
-	int				mode;
+	struct stat file_stat;
 	struct s_data	*last;
 	struct s_data	*next;
-	int				blocks;
 }				t_data;
 
 typedef struct	s_sizes
@@ -48,7 +45,7 @@ int				get_file(char **files, char *flags);
 int				fill(struct s_data *data, char *file, char *file_dirent);
 int				is_file(char *name);
 int				is_dir(char *name);
-void			aff_list(struct s_data *data, char *flags);
+void			aff_list(struct s_data *data, char *flags, char *path);
 int				ft_ls(char **dires, char *flags);
 char			*get_path_file(char *name, char *repo, char *d_name);
 int				fill_data(t_data *data, char *name, char *flags, char *repo);

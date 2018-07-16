@@ -42,21 +42,17 @@ int		fill(struct s_data *data, char *file, char *file_dirent)
 	struct group	*grpuid;
 	struct stat		file_stat;
 
-	if (stat(file, &file_stat) == FAILURE)
+	if (lstat(file, &file_stat) == FAILURE)
 		return (FAILURE);
-	data->nb_links = file_stat.st_nlink;
-	data->size = file_stat.st_size;
-	data->blocks = file_stat.st_blocks;
+	data->file_stat = file_stat;
 	if (!(owneruid = getpwuid(file_stat.st_uid)))
 		return (FAILURE);
 	if (!(grpuid = getgrgid(file_stat.st_gid)))
 		return (FAILURE);
 	data->owner = owneruid->pw_name;
 	data->grp = grpuid->gr_name;
-	data->time = file_stat.st_mtime;
 	if (!(data->name = ft_strdup(file_dirent)))
 		return (FAILURE);
-	data->mode = file_stat.st_mode;
 	return (SUCCESS);
 }
 

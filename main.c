@@ -30,7 +30,7 @@ int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
 	{
 		if (ft_strcmp(data->name, ".") != 0 && ft_strcmp(data->name, "..") != 0)
 		{
-			if (S_ISDIR(data->mode))
+			if (S_ISDIR(data->file_stat.st_mode))
 			{
 				if (!(dires[0] = get_path_file(curr_dires, repo, data->name)))
 					return (FAILURE);
@@ -64,7 +64,7 @@ int	ft_ls(char **dires, char *flags)
 			ft_putstr(dires[x]);
 			ft_putstr(":\n");
 		}
-		aff_list(data, flags);
+		aff_list(data, flags, dires[x]);
 		if (flags[ft_findchar(flags, 'R')] == 'R')
 			if (recursive_option(dires[x], flags, data) == FAILURE)
 				return (FAILURE);
