@@ -6,11 +6,12 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 09:49:57 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/14 18:24:40 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/16 18:59:37 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include "ft_ls.h"
 
 void	ascii_sort(struct s_data *data)
@@ -65,17 +66,24 @@ void	time_sort(struct s_data *data)
 
 void	reverse_list(struct s_data *data)
 {
-	t_data *temp;
+	t_data	*head;
+	t_data	*temp;
 
-	while (data->next)
+	head = data;
+	while (data)
 	{
-		printf("%s\n", data->name);
-		read(0, NULL, 1024);
 		temp = data->last;
 		data->last = data->next;
 		data->next = temp;
 		data = data->last;
 	}
+	data = head;
+	while (data->last)
+		data = data->last;
+	data->next->last = NULL;
+	data->next = NULL;
+	data->last = temp;
+	head->next = data;
 }
 
 void	parse_sort(char *flags, struct s_data *data)

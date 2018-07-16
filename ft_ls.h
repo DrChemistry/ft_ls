@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 13:39:24 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/14 18:32:49 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/16 19:03:34 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct	s_data
 	char			*owner;
 	char			*grp;
 	char			*name;
-	struct stat file_stat;
+	struct stat		file_stat;
 	struct s_data	*last;
 	struct s_data	*next;
 }				t_data;
@@ -51,5 +51,7 @@ char			*get_path_file(char *name, char *repo, char *d_name);
 int				fill_data(t_data *data, char *name, char *flags, char *repo);
 int				print_files(char **files, char *flags);
 void			parse_sort(char *flags, struct s_data *data);
+void			aff_time(char *str);
+void			aff_type(struct s_data *data);
 
 #endif

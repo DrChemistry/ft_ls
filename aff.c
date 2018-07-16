@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/08 10:25:35 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/14 18:15:23 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/16 18:56:49 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,6 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "ft_ls.h"
-
-void			aff_time(char *str)
-{
-	int x;
-	int tmp;
-
-	x = 0;
-	tmp = 0;
-	while (str[x] && str[x] != ' ')
-		++x;
-	while (str[x] && tmp < 2)
-	{
-		ft_putchar(str[x++]);
-		if (str[x] == ':')
-			++tmp;
-	}
-}
 
 struct s_sizes	*get_all_the_sizes(struct s_data *data)
 {
@@ -62,27 +45,7 @@ struct s_sizes	*get_all_the_sizes(struct s_data *data)
 	return (length);
 }
 
-void aff_type(struct s_data *data)
-{
-	if (S_ISLNK(data->file_stat.st_mode))
-		write(1, "l", 1);
-	else if (S_ISBLK(data->file_stat.st_mode))
-		write(1, "b", 1);
-	else if (S_ISDIR(data->file_stat.st_mode))
-		write(1, "d", 1);
-	else if (S_ISCHR(data->file_stat.st_mode))
-		write(1, "c", 1);
-	else if (S_ISFIFO(data->file_stat.st_mode))
-		write(1, "f", 1);
-	else if (S_ISSOCK(data->file_stat.st_mode))
-		write(1, "s", 1);
-	else if (S_ISREG(data->file_stat.st_mode))
-		write(1, "-", 1);
-	else
-		write(1, "u", 1);
-}
-
-void			aff_stuff(struct s_data *data, struct s_sizes *sizes, char *path)
+void			aff_stuff(t_data *data, t_sizes *sizes, char *path)
 {
 	int	tmp;
 
@@ -106,22 +69,23 @@ void			aff_stuff(struct s_data *data, struct s_sizes *sizes, char *path)
 	tmp = sizes->char_owner - ft_strlen(data->owner);
 	while (tmp-- > 0)
 		ft_putchar(' ');
+	ft_putstr("  ");
 }
 
-void aff_link(char *path, char *name)
+void			aff_link(char *path, char *name)
 {
 	char buff[1024];
 	char *file;
 
 	ft_bzero(buff, 1024);
 	if (!(file = ft_strjoin(path, name)))
-		exit (0);
+		exit(0);
 	readlink(file, buff, 1024);
 	ft_putstr(" -> ");
 	ft_putstr(buff);
 }
 
-void			long_format(t_data *data, t_sizes *sizes, char *flags, char *path)
+void			lng_form(t_data *data, t_sizes *sizes, char *flags, char *path)
 {
 	int	tmp;
 
@@ -131,7 +95,6 @@ void			long_format(t_data *data, t_sizes *sizes, char *flags, char *path)
 	while (data->next)
 	{
 		aff_stuff(data, sizes, path);
-		ft_putstr("  ");
 		ft_putstr(data->grp);
 		tmp = sizes->char_grp - ft_strlen(data->grp);
 		while (tmp-- > 0)
@@ -162,7 +125,7 @@ void			aff_list(struct s_data *data, char *flags, char *path)
 	{
 		if (!(sizes = get_all_the_sizes(data)))
 			return ;
-		long_format(data, sizes, flags, path);
+		lng_form(data, sizes, flags, path);
 	}
 	else
 	{
