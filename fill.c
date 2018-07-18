@@ -81,6 +81,7 @@ int		fill_data(t_data *data, char *name, char *flags, char *repo)
 			free(file);
 		}
 	}
+	closedir(dir);
 	data->next = NULL;
 	return (SUCCESS);
 }
