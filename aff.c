@@ -89,9 +89,6 @@ void			lng_form(t_data *data, t_sizes *sizes, char *flags, char *path)
 {
 	int	tmp;
 
-	ft_putstr("total ");
-	ft_putnbr(sizes->blocks);
-	ft_putchar('\n');
 	while (data->next)
 	{
 		aff_stuff(data, sizes, path);
@@ -114,7 +111,7 @@ void			lng_form(t_data *data, t_sizes *sizes, char *flags, char *path)
 	}
 }
 
-void			aff_list(struct s_data *data, char *flags, char *path)
+void			aff_list(struct s_data *data, char *flags, char *path, int b)
 {
 	struct s_sizes	*sizes;
 
@@ -124,7 +121,13 @@ void			aff_list(struct s_data *data, char *flags, char *path)
 	if (flags[ft_findchar(flags, 'l')] == 'l')
 	{
 		if (!(sizes = get_all_the_sizes(data)))
-			return ;
+			exit(0);
+		if (b == 1)
+		{
+			ft_putstr("total ");
+			ft_putnbr(sizes->blocks);
+			ft_putchar('\n');
+		}
 		lng_form(data, sizes, flags, path);
 	}
 	else

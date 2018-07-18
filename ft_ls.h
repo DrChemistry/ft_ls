@@ -45,7 +45,7 @@ int				get_file(char **files, char *flags);
 int				fill(struct s_data *data, char *file, char *file_dirent);
 int				is_file(char *name);
 int				is_dir(char *name);
-void			aff_list(struct s_data *data, char *flags, char *path);
+void			aff_list(struct s_data *data, char *flags, char *path, int b);
 int				ft_ls(char **dires, char *flags);
 char			*get_path_file(char *name, char *repo, char *d_name);
 int				fill_data(t_data *data, char *name, char *flags, char *repo);

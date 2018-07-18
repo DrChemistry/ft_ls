@@ -46,6 +46,17 @@ int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
 	return (SUCCESS);
 }
 
+void free_data(t_data *data)
+{
+	while (data->next)
+	{
+		free(data->name);
+		data = data->next;
+		free(data->last);
+	}
+	free(data);
+}
+
 int	ft_ls(char **dires, char *flags)
 {
 	int				x;
@@ -64,12 +75,44 @@ int	ft_ls(char **dires, char *flags)
 			ft_putstr(dires[x]);
 			ft_putstr(":\n");
 		}
-		aff_list(data, flags, dires[x]);
+		aff_list(data, flags, dires[x], 1);
 		if (flags[ft_findchar(flags, 'R')] == 'R')
 			if (recursive_option(dires[x], flags, data) == FAILURE)
 				return (FAILURE);
 		if (dires[++x])
 			ft_putstr("\n");
+		free_data(data);
+	}
+	return (SUCCESS);
+}
+
+int ft_files(char **files, char *flags, char **dires)
+{
+	int x;
+	t_data *data;
+
+	x = 0;
+	if (!(data = malloc(sizeof(t_data))))
+		return (FAILURE);
+	data->last = NULL;
+	while (files[x])
+	{
+		fill(data, files[x], files[x]);
+		if (!(data->next = malloc(sizeof(t_data))))
+			return (FAILURE);
+		data->next->last = data;
+		data = data->next;
+		++x;
+	}
+	data->next = NULL;
+	while (data->last)
+		data = data->last;
+	aff_list(data, flags, "./", 0);
+	if (dires[0])
+	{
+		ft_putchar('\n');
+		ft_putstr(dires[0]);
+		ft_putstr(":\n");
 	}
 	return (SUCCESS);
 }
@@ -95,6 +138,8 @@ int	separate_file(char **name, char *flags, int size)
 			files[c++] = name[x++];
 	files[c] = NULL;
 	dires[b] = NULL;
+	if (files[0] && ft_files(files, flags, dires) == FAILURE)
+		return (FAILURE);
 	if (ft_ls(dires, flags) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
@@ -112,6 +157,8 @@ int	main(int ac, char **av)
 			|| !(files = malloc(sizeof(char *) * (ac + 1))))
 		return (FAILURE);
 	b = 0;
+	if (!av[x])
+		files[b++] = "./";
 	while (av[x])
 	{
 		if (is_dir(av[x]) == SUCCESS || is_file(av[x]) == SUCCESS)
@@ -123,8 +170,6 @@ int	main(int ac, char **av)
 			ft_putstr(": No such file or directory\n");
 		}
 	}
-	if (b == 0)
-		files[b++] = "./";
 	files[b] = NULL;
 	return (separate_file(files, flags, b + 1));
 }
