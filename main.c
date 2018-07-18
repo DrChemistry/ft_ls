@@ -142,6 +142,8 @@ int	separate_file(char **name, char *flags, int size)
 		return (FAILURE);
 	if (ft_ls(dires, flags) == FAILURE)
 		return (FAILURE);
+	free(files);
+	free(dires);
 	return (SUCCESS);
 }
 
