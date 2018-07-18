@@ -171,5 +171,10 @@ int	main(int ac, char **av)
 		}
 	}
 	files[b] = NULL;
-	return (separate_file(files, flags, b + 1));
+	if (separate_file(files, flags, b + 1) == FAILURE)
+		return (FAILURE);
+	b = 0;
+	while (files[b])
+		free(files[b++]);
+	return (SUCCESS);
 }
