@@ -48,6 +48,8 @@ int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
 
 void free_data(t_data *data)
 {
+	while (data->last)
+	data = data->last;
 	while (data->next)
 	{
 		free(data->name);
