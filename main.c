@@ -176,5 +176,6 @@ int	main(int ac, char **av)
 	b = 0;
 	while (files[b])
 		free(files[b++]);
+	free(files);
 	return (SUCCESS);
 }
