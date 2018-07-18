@@ -116,6 +116,7 @@ int ft_files(char **files, char *flags, char **dires)
 		ft_putstr(dires[0]);
 		ft_putstr(":\n");
 	}
+	free_data(data);
 	return (SUCCESS);
 }
 
