@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/08 10:19:57 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/08 10:51:55 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/18 19:59:55 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,9 @@ int		fill_data(t_data *data, char *name, char *flags, char *repo)
 			|| (file_dirent->d_name[0] == '.'
 				&& flags[ft_findchar(flags, 'a')] == 'a'))
 		{
-			if (!(file = get_path_file(name, repo, file_dirent->d_name)))
-				return (FAILURE);
-			if (fill(data, file, file_dirent->d_name) == FAILURE)
-				return (FAILURE);
-			if (!(data->next = malloc(sizeof(struct s_data))))
+			if (!(file = get_path_file(name, repo, file_dirent->d_name))
+					|| fill(data, file, file_dirent->d_name) == FAILURE
+					|| !(data->next = malloc(sizeof(struct s_data))))
 				return (FAILURE);
 			data->next->last = data;
 			data = data->next;

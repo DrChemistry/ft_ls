@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 18:51:53 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/16 18:59:02 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/18 20:26:29 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 #include <time.h>
 #include <stdlib.h>
 #include "ft_ls.h"
+
+void	aff_year(char *str, int x, int tmp)
+{
+	while (str[x] && x < 10)
+	{
+		ft_putchar(str[x]);
+		if (str[x] == ' ')
+			++tmp;
+		++x;
+	}
+	ft_putchar(' ');
+	str[ft_strlen(str) - 1] = '\0';
+	ft_putstr(str + ft_strlen(str) - 5);
+}
 
 void	aff_time(char *str)
 {
@@ -38,17 +52,7 @@ void	aff_time(char *str)
 				++tmp;
 		}
 	else
-	{
-		while (str[x] && tmp <= 3)
-		{
-			ft_putchar(str[x]);
-			if (str[x] == ' ')
-				++tmp;
-			++x;
-		}
-		str[ft_strlen(str) - 1] = '\0';
-		ft_putstr(str + ft_strlen(str) - 5);
-	}
+		aff_year(str, x, tmp);
 }
 
 void	aff_type(struct s_data *data)

@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 12:13:57 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/14 18:23:36 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/18 20:07:52 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
 
 	dires[1] = NULL;
 	repo = "/";
+	while (data->last)
+		data = data->last;
 	while (data->next)
 	{
 		if (ft_strcmp(data->name, ".") != 0 && ft_strcmp(data->name, "..") != 0)
@@ -37,7 +39,7 @@ int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
 				ft_putchar('\n');
 				ft_putstr(dires[0]);
 				ft_putstr(":\n");
-				if (ft_ls(dires, flags) == FAILURE)
+				if (ft_ls(dires, flags, NULL) == FAILURE)
 					return (FAILURE);
 			}
 		}
@@ -46,20 +48,7 @@ int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
 	return (SUCCESS);
 }
 
-void free_data(t_data *data)
-{
-	while (data->last)
-	data = data->last;
-	while (data->next)
-	{
-		free(data->name);
-		data = data->next;
-		free(data->last);
-	}
-	free(data);
-}
-
-int	ft_ls(char **dires, char *flags)
+int	ft_ls(char **dires, char *flags, char **files)
 {
 	int				x;
 	struct s_data	*data;
@@ -72,7 +61,7 @@ int	ft_ls(char **dires, char *flags)
 		data->last = NULL;
 		if (fill_data(data, dires[x], flags, "/") == FAILURE)
 			return (FAILURE);
-		if ((x == 0 && dires[x + 1]) || x > 0)
+		if ((x == 0 && dires[x + 1]) || x > 0 || (files && files[0]))
 		{
 			ft_putstr(dires[x]);
 			ft_putstr(":\n");
@@ -88,34 +77,27 @@ int	ft_ls(char **dires, char *flags)
 	return (SUCCESS);
 }
 
-int ft_files(char **files, char *flags, char **dires)
+int	ft_files(char **files, char *flags, char **dires, int x)
 {
-	int x;
-	t_data *data;
+	t_data	*data;
 
-	x = 0;
 	if (!(data = malloc(sizeof(t_data))))
 		return (FAILURE);
 	data->last = NULL;
-	while (files[x])
+	while (files[++x])
 	{
 		fill(data, files[x], files[x]);
 		if (!(data->next = malloc(sizeof(t_data))))
 			return (FAILURE);
 		data->next->last = data;
 		data = data->next;
-		++x;
 	}
 	data->next = NULL;
 	while (data->last)
 		data = data->last;
 	aff_list(data, flags, "./", 0);
-	if (dires[0])
-	{
+	if (dires && dires[0])
 		ft_putchar('\n');
-		ft_putstr(dires[0]);
-		ft_putstr(":\n");
-	}
 	free_data(data);
 	return (SUCCESS);
 }
@@ -141,9 +123,8 @@ int	separate_file(char **name, char *flags, int size)
 			files[c++] = name[x++];
 	files[c] = NULL;
 	dires[b] = NULL;
-	if (files[0] && ft_files(files, flags, dires) == FAILURE)
-		return (FAILURE);
-	if (ft_ls(dires, flags) == FAILURE)
+	if ((files[0] && ft_files(files, flags, dires, -1) == FAILURE)
+			|| ft_ls(dires, flags, files) == FAILURE)
 		return (FAILURE);
 	free(files);
 	free(dires);
@@ -157,7 +138,6 @@ int	main(int ac, char **av)
 	char	flags[6];
 	char	**files;
 
-	x = 1;
 	if ((x = flags_gestion(flags, av, x)) == FAILURE
 			|| !(files = malloc(sizeof(char *) * (ac + 1))))
 		return (FAILURE);
@@ -165,7 +145,6 @@ int	main(int ac, char **av)
 	if (!av[x])
 		files[b++] = "./";
 	while (av[x])
-	{
 		if (is_dir(av[x]) == SUCCESS || is_file(av[x]) == SUCCESS)
 			files[b++] = av[x++];
 		else
@@ -174,13 +153,9 @@ int	main(int ac, char **av)
 			ft_putstr(av[x++]);
 			ft_putstr(": No such file or directory\n");
 		}
-	}
 	files[b] = NULL;
 	if (separate_file(files, flags, b + 1) == FAILURE)
 		return (FAILURE);
-	b = 0;
-//	while (files[b])
-//		free(files[b++]);
 	free(files);
 	return (SUCCESS);
 }

@@ -35,7 +35,7 @@ all:	$(NAME)
 
 $(NAME):	$(OBJ)
 	$(MAKE)
-	gcc -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
+	gcc -Wall -Wextra -Werror -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
 
 clean:
 	$(MAKE) clean

@@ -23,7 +23,7 @@ struct s_sizes	*get_all_the_sizes(struct s_data *data)
 	struct s_sizes	*length;
 
 	if (!(length = malloc(sizeof(t_sizes))))
-		return (NULL);
+		exit(0);
 	length->size = 0;
 	length->links = 0;
 	length->char_owner = 0;
@@ -115,13 +115,10 @@ void			aff_list(struct s_data *data, char *flags, char *path, int b)
 {
 	struct s_sizes	*sizes;
 
-	parse_sort(flags, data);
-	while (data->last)
-		data = data->last;
+	data = parse_sort(flags, data);
 	if (flags[ft_findchar(flags, 'l')] == 'l')
 	{
-		if (!(sizes = get_all_the_sizes(data)))
-			exit(0);
+		sizes = get_all_the_sizes(data);
 		if (b == 1)
 		{
 			ft_putstr("total ");

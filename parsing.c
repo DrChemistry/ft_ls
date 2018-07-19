@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 09:49:57 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/16 18:59:37 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/19 12:47:38 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	time_sort(struct s_data *data)
 {
 	struct s_data	*tmp;
 
-	while (data->next->next)
+	while (data && data->next && data->next->next)
 	{
 		if (data->file_stat.st_mtime < data->next->file_stat.st_mtime)
 		{
@@ -78,15 +78,18 @@ void	reverse_list(struct s_data *data)
 		data = data->last;
 	}
 	data = head;
-	while (data->last)
-		data = data->last;
-	data->next->last = NULL;
-	data->next = NULL;
-	data->last = temp;
-	head->next = data;
+	if (data)
+	{
+		while (data && data->last)
+			data = data->last;
+		data->next->last = NULL;
+		data->next = NULL;
+		data->last = head;
+		head->next = data;
+	}
 }
 
-void	parse_sort(char *flags, struct s_data *data)
+t_data	*parse_sort(char *flags, struct s_data *data)
 {
 	int	x;
 
@@ -94,11 +97,13 @@ void	parse_sort(char *flags, struct s_data *data)
 	ascii_sort(data);
 	while (data->last)
 		data = data->last;
-	while (flags[++x])
-	{
-		if (flags[x] == 't')
-			time_sort(data);
-		if (flags[x] == 'r')
-			reverse_list(data);
-	}
+	if (flags[ft_findchar(flags, 't')] == 't')
+		time_sort(data);
+	while (data->last)
+		data = data->last;
+	if (flags[ft_findchar(flags, 'r')] == 'r')
+		reverse_list(data);
+	while (data->last)
+		data = data->last;
+	return (data);
 }
