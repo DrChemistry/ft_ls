@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 09:49:57 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/19 12:47:38 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/08/01 16:01:59 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	reverse_list(struct s_data *data)
 	t_data	*head;
 	t_data	*temp;
 
+	if (!data->last && !data->next)
+		return ;
 	head = data;
 	while (data)
 	{

@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 13:39:24 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/18 20:23:40 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/08/01 15:57:16 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ t_data			*parse_sort(char *flags, struct s_data *data);
 void			aff_time(char *str);
 void			aff_type(struct s_data *data);
 void			free_data(t_data *data);
+void			aff_acl(char *path);
 
 #endif

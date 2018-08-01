@@ -6,13 +6,14 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 18:51:53 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/18 20:26:29 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/08/01 16:01:24 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <time.h>
 #include <stdlib.h>
+#include <sys/xattr.h>
 #include "ft_ls.h"
 
 void	aff_year(char *str, int x, int tmp)
@@ -27,6 +28,18 @@ void	aff_year(char *str, int x, int tmp)
 	ft_putchar(' ');
 	str[ft_strlen(str) - 1] = '\0';
 	ft_putstr(str + ft_strlen(str) - 5);
+}
+
+void	aff_acl(char *path)
+{
+	if (!path)
+		exit(0);
+	if (listxattr(path, NULL, 0, XATTR_NOFOLLOW) > 0)
+		ft_putchar('@');
+	else
+		ft_putchar(' ');
+	free(path);
+	ft_putchar(' ');
 }
 
 void	aff_time(char *str)

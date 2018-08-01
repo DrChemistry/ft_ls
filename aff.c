@@ -16,6 +16,7 @@
 #include <grp.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include "ft_ls.h"
 
 struct s_sizes	*get_all_the_sizes(struct s_data *data)
@@ -59,7 +60,7 @@ void			aff_stuff(t_data *data, t_sizes *sizes, char *path)
 	ft_putchar((data->file_stat.st_mode & S_IROTH) ? ('r') : ('-'));
 	ft_putchar((data->file_stat.st_mode & S_IWOTH) ? ('w') : ('-'));
 	ft_putchar((data->file_stat.st_mode & S_IXOTH) ? ('x') : ('-'));
-	ft_putstr("  ");
+	aff_acl(ft_strjoin(path, data->name));
 	tmp = sizes->links - ft_strlen(ft_itoa(data->file_stat.st_nlink));
 	while (tmp-- > 0)
 		ft_putchar(' ');
