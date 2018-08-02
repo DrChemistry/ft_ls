@@ -17,6 +17,7 @@
 #include <dirent.h>
 #include <pwd.h>
 #include <grp.h>
+#include <errno.h>
 #include "ft_ls.h"
 
 char	*get_path_file(char *name, char *repo, char *d_name)
@@ -62,7 +63,10 @@ int		fill_data(t_data *data, char *name, char *flags, char *repo)
 	struct dirent	*file_dirent;
 	char			*file;
 
-	if (!(dir = opendir(name)))
+	dir = opendir(name);
+	if (errno == 13)
+		return (SUCCESS);
+	else if (!dir)
 		return (FAILURE);
 	while ((file_dirent = readdir(dir)))
 	{

@@ -18,8 +18,9 @@
 # include <stdlib.h>
 # include "./libft/libft.h"
 
-# define FAILURE -1
-# define SUCCESS 0
+# define FAILURE	-1
+# define SUCCESS	0
+# define ERROR1		1
 
 typedef struct	s_data
 {

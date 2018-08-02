@@ -17,6 +17,7 @@
 #include <dirent.h>
 #include <pwd.h>
 #include <grp.h>
+#include <errno.h>
 #include "ft_ls.h"
 
 int	recursive_option(char *curr_dires, char *flags, struct s_data *data)
@@ -53,26 +54,31 @@ int	ft_ls(char **dires, char *flags, char **files)
 	int				x;
 	struct s_data	*data;
 
-	x = 0;
-	while (dires[x])
+	x = -1;
+	while (dires[++x])
 	{
 		if (!(data = malloc(sizeof(struct s_data))))
 			return (FAILURE);
 		data->last = NULL;
 		if (fill_data(data, dires[x], flags, "/") == FAILURE)
 			return (FAILURE);
-		if ((x == 0 && dires[x + 1]) || x > 0 || (files && files[0]))
+		if (errno != 13)
 		{
-			ft_putstr(dires[x]);
-			ft_putstr(":\n");
+			if ((x == 0 && dires[x + 1]) || x > 0 || (files && files[0]))
+			{
+				ft_putstr(dires[x]);
+				ft_putstr(":\n");
+			}
+			aff_list(data, flags, dires[x], 1);
+			if (flags[ft_findchar(flags, 'R')] == 'R')
+				if (recursive_option(dires[x], flags, data) == FAILURE)
+					return (FAILURE);
+			if (dires[x + 1])
+				ft_putstr("\n");
+			free_data(data);
 		}
-		aff_list(data, flags, dires[x], 1);
-		if (flags[ft_findchar(flags, 'R')] == 'R')
-			if (recursive_option(dires[x], flags, data) == FAILURE)
-				return (FAILURE);
-		if (dires[++x])
-			ft_putstr("\n");
-		free_data(data);
+		else
+			errno = 0;
 	}
 	return (SUCCESS);
 }
