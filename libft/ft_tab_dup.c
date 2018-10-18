@@ -1,19 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puterror.c                                      :+:      :+:    :+:   */
+/*   ft_tab_dup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/12 12:18:59 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/14 18:33:56 by adi-rosa         ###   ########.fr       */
+/*   Created: 2018/09/20 15:03:00 by adi-rosa          #+#    #+#             */
+/*   Updated: 2018/09/20 15:03:01 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-int	ft_puterror(char *str, int x)
+char **ft_tab_dup(char **tab)
 {
-	ft_putstr(str);
-	return (x);
+	char	**res;
+	int		x;
+
+	x = 0;
+	while (tab[x])
+		++x;
+	if (!(res = malloc(sizeof(char *) * (x + 1))))
+		return (NULL);
+	x = 0;
+	while (tab[x])
+		{
+			if (!(res[x] = ft_strdup(tab[x])))
+				return (NULL);
+			++x;
+		}
+		res[x] = NULL;
+		return (res);
 }

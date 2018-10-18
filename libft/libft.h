@@ -6,7 +6,7 @@
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 08:51:40 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/07/14 18:34:22 by adi-rosa         ###   ########.fr       */
+/*   Updated: 2018/07/19 13:59:56 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <string.h>
+# include "get_next_line.h"
 
 void	ft_bzero(void *s, size_t n);
 int		ft_atoi(const char *str);
@@ -67,7 +68,8 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char const *s, int fd);
 void	ft_putendl_fd(char const *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-int		ft_findchar(char *s, char c);
-int		ft_puterror(char *str, int x);
+int		ft_findchar(char *str, char c);
+char	**ft_tab_dup(char **tab);
+int		ft_count_char(char *str, char c);
 
 #endif

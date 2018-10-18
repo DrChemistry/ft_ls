@@ -15,13 +15,11 @@ MAKE	=	make -C ./libft/
 RM	=	rm -f
 
 SRC	=	main.c		\
-			flags.c		\
-			check.c		\
-			fill.c		\
-			aff.c			\
-			parsing.c	\
-			disp.c	\
-
+			init.c		\
+			env.c			\
+			prompt.c	\
+			parse_comm.c	\
+			exec_comm.c	\
 
 LIB	=	-L./libft/ -lft
 
@@ -29,7 +27,7 @@ OBJ	=	$(SRC:.c=.o)
 
 INCLUDE =	-I.
 
-NAME	=	ft_ls
+NAME	=	minishell
 
 all:	$(NAME)
 

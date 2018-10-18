@@ -6,7 +6,7 @@
 #    By: adi-rosa <yfuks@student.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/20 15:27:58 by adi-rosa          #+#    #+#              #
-#    Updated: 2018/03/12 12:20:12 by adi-rosa         ###   ########.fr        #
+#    Updated: 2018/07/19 13:59:10 by adi-rosa         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -64,8 +64,10 @@ SRC	=	ft_atoi.c		\
 		ft_putstr_fd.c	\
 		ft_putendl_fd.c	\
 		ft_putnbr_fd.c	\
+		get_next_line.c	\
 		ft_findchar.c	\
-		ft_puterror.c	\
+		ft_tab_dup.c	\
+		ft_count_char.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
