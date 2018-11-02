@@ -1,120 +1,119 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_comm.c                                       :+:      :+:    :+:   */
+/*   parse_comms.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/24 10:06:06 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/09/24 10:06:07 by adi-rosa         ###   ########.fr       */
+/*   Created: 2018/10/26 14:01:35 by adi-rosa          #+#    #+#             */
+/*   Updated: 2018/10/28 14:38:24 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
 
-char **split_args(char *line, int x, char **tab)
+int		copy_lines(char *str, int x, char **tab, int b)
 {
-	int b;
-	int c;
-	int a;
-	int count;
+	int	c;
+	int	in_between;
 
-	b = 1;
-	count = 0;
 	c = 0;
-	if (!(tab[1] = malloc(sizeof(char) * ft_strlen(line) + 2)))
-		return (NULL);
-	while (line[x])
+	while (str[x] && (str[x] == ' ' || str[x] == '\t'))
+		++x;
+	in_between = 0;
+	while (str[x])
 	{
-		if (line[x] == ' ' && count == 0)
-			{
-				tab[b][c] = '\0';
-				++b;
-				c = 0;
-				while (line[x] && line[x] == ' ')
-					++x;
-				--x;
-				if (!(tab[b] = malloc(sizeof(char) * ft_strlen(line) + 2)))
-					return (NULL);
-			}
-		else if (line[x] == '\"' && count == 0)
-			count = 1;
-		else if (line[x] == '\"' && count == 1)
-			count = 0;
-		else
-			tab[b][c++] = line[x];
-		x++;
+		if (str[x] == ';' && in_between == 0)
+			break ;
+		tab[b][c++] = str[x];
+		if ((str[x] == '\"' && x == 0)
+			|| (x > 0 && str[x] == '\"' && str[x - 1] != '\\'))
+			in_between = in_between == 0 ? 1 : 0;
+		++x;
 	}
-	if (line[x - 1] != ' ')
-		tab[b++][c] = '\0';
+	c--;
+	while (c > 0 && (tab[b][c] == ' ' || tab[b][c] == '\t'))
+		--c;
+	tab[b][++c] = '\0';
+	return (x);
+}
+
+char	**ft_minishell_split(char *str, t_comm *comm)
+{
+	int		x;
+	int		b;
+	char	**tab;
+
+	if (!(tab = malloc(sizeof(char *) * (ft_count_char(str, ';') + 2))))
+		ft_quit("bash: malloc error", 2, comm);
+	x = 0;
+	b = 0;
+	while (str[x])
+	{
+		if (str[x] && !(tab[b] = malloc(sizeof(char) * ft_strlen(str) + 1)))
+			ft_quit("bash: malloc error", 2, NULL);
+		x = copy_lines(str, x, tab, b);
+		++b;
+		if (str[x])
+			++x;
+	}
+	tab[b] = NULL;
+	if (tab[b - 1][0] == '\0')
+		tab[b - 1] = NULL;
+	return (tab);
+}
+
+int		parse_line(char *str, int x, char **tab, int b)
+{
+	int	c;
+	int	in_between;
+
+	c = 0;
+	in_between = 0;
+	while (str[x])
+	{
+		if ((str[x] == ' ' || str[x] == '\t') && in_between == 0)
+			break ;
+		if ((str[x] == '\"' && x == 0)
+			|| (x > 0 && str[x] == '\"' && str[x - 1] != '\\'))
+			in_between = in_between == 0 ? 1 : 0;
+		else
+			tab[b][c++] = str[x];
+		++x;
+	}
+	tab[b][c] = '\0';
+	return (x);
+}
+
+char	**comm_parsing(char *str)
+{
+	int		x;
+	int		b;
+	char	**tab;
+
+	if (!(tab = malloc(sizeof(char *) * (ft_strlen(str) + 2))))
+		ft_quit("bash: malloc error", 2, NULL);
+	x = 0;
+	b = 0;
+	while (str[x])
+	{
+		if (!(tab[b] = malloc(sizeof(char) * ft_strlen(str) + 2)))
+			ft_quit("bash: malloc error", 2, NULL);
+		while (str[x] && (str[x] == ' ' || str[x] == '\t'))
+			++x;
+		if (str[x])
+			x = parse_line(str, x, tab, b++);
+	}
 	tab[b] = NULL;
 	return (tab);
 }
 
-char *check_even(char *line)
+void	parse_comm(t_comm *comm)
 {
-	char *space;
-	char **comm;
-	char *tmp;
-
-	space = "\n";
-	if (!(comm = malloc(sizeof(char *) * 1)))
-		return (NULL);
-	while (ft_count_char(line, '\"') % 2 != 0)
+	while (comm)
 	{
-		tmp = line;
-		if (!(line = ft_strjoin(line, space)))
-			return (NULL);
-		free(tmp);
-		ft_putstr(">");
-		tmp = line;
-		if (get_next_line(1, comm) == -1 || !(line = ft_strjoin(line, comm[0])))
-			return (NULL);
-		free(comm[0]);
-		free(comm);
-		//free(tmp);
+		comm->tab = comm_parsing(comm->ori);
+		comm = comm->next;
 	}
-	return (line);
-}
-
-char		**ft_commsplit(char *line)
-{
-	int x;
-	char **tab;
-	int c;
-
-	if (!(line = check_even(line)))
-		return (NULL);
-	if (!(tab = malloc(sizeof(char *) * (ft_strlen(line) + 2)))
-			|| !(tab[0] = malloc(sizeof(char) * ft_strlen(line) + 2)))
-		return (NULL);
-	x = 0;
-	c = 0;
-	while (line[x] && line[x] != ' ' && line[x] != '\t')
-		tab[0][c++] = line[x++];
-	tab[0][c] = '\0';
-	tab[1] = NULL;
-	if (line[x])
-		{
-			while (line[x] == ' ' || line[x] == '\t')
-				++x;
-			if (!split_args(line, x, tab))
-				return (NULL);
-		}
-	return (tab);
-}
-
-t_comm	*parse_command(char *line)
-{
-	t_comm *comm;
-
-	if (!(comm = malloc(sizeof(t_comm))))
-		return (NULL);
-	if (!(comm->tab = ft_commsplit(line)))
-		return (NULL);
-	comm->last = NULL;
-	comm->next = NULL;
-	comm->ori = line;
-	return (comm);
 }

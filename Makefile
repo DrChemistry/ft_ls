@@ -14,12 +14,19 @@ MAKE	=	make -C ./libft/
 
 RM	=	rm -f
 
-SRC	=	main.c		\
-			init.c		\
-			env.c			\
-			prompt.c	\
-			parse_comm.c	\
-			exec_comm.c	\
+SRC	=	main.c							\
+			exit.c							\
+			init.c							\
+			ft_cd.c							\
+			ft_echo.c						\
+			env.c								\
+			print.c							\
+			commands_controls.c	\
+			parse_comm.c				\
+			exec_comm.c					\
+			flags_handle.c			\
+			tools.c							\
+			path_exec.c					\
 
 LIB	=	-L./libft/ -lft
 

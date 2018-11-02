@@ -5,41 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/24 09:37:08 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/09/24 09:37:09 by adi-rosa         ###   ########.fr       */
+/*   Created: 2018/10/24 15:17:34 by adi-rosa          #+#    #+#             */
+/*   Updated: 2018/10/26 13:57:51 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
 
-int init_env(t_env *env, char **tab)
+void	init_env(char **tab, t_comm *comm)
 {
 	int		x;
 	char	**tmp;
 
 	x = 0;
+	if (!(env = malloc(sizeof(t_env) * 1)))
+		ft_quit("minishell: erreur malloc", 2, comm);
 	if (!(env->env = ft_tab_dup(tab)))
-		return (FAILURE);
+		ft_quit("minishell: erreur malloc", 2, comm);
 	while (tab[x])
 		++x;
 	if (!(env->variable = malloc(sizeof(char *) * (x + 1)))
 			|| !(env->value = malloc(sizeof(char *) * (x + 1))))
-		return (FAILURE);
+		ft_quit("minishell: erreur malloc", 2, comm);
 	x = 0;
 	while (tab[x])
 	{
 		if (!(tmp = ft_strsplit(tab[x], '=')))
-			return (FAILURE);
+			ft_quit("minishell: erreur malloc", 2, comm);
 		env->variable[x] = tmp[0];
 		env->value[x++] = tmp[1];
 	}
 	env->variable[x] = NULL;
 	env->value[x] = NULL;
-	return (SUCCESS);
 }
 
-char		**init_tab(int (*ft_tab[])(t_comm *data, t_env *env))
+char	**init_tab(int (*ft_tab[])(t_comm *data))
 {
 	char	**tab;
 

@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/24 14:41:32 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/11/02 12:57:28 by adi-rosa         ###   ########.fr       */
+/*   Created: 2018/10/24 14:17:41 by adi-rosa          #+#    #+#             */
+/*   Updated: 2018/10/26 13:57:28 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
+#include <stdlib.h>
 
-void	delete_comms(t_comm *comm)
+int		ft_exit(t_comm *data)
+{
+	ft_quit("exit", 1, data);
+	return (0);
+}
+
+void	ft_quit(char *msg, int outp, t_comm *comm)
 {
 	int		x;
 	t_comm	*tmp;
 
-	while (comm->last)
-		comm = comm->last;
+	x = 0;
+	while (env && env->env[x])
+	{
+		free(env->env[x]);
+		free(env->variable[x]);
+		free(env->value[x++]);
+	}
 	while (comm)
 	{
 		x = 0;
@@ -28,30 +39,9 @@ void	delete_comms(t_comm *comm)
 		if (comm->ori)
 			free(comm->ori);
 		tmp = comm;
-		comm = comm->next;
+		comm = comm->last;
 		free(tmp);
 	}
-}
-
-int		main(int ac, char **av, char **env_or)
-{
-	t_comm	*comm;
-	int		(*ft_tab[NB_BUILT_IN + 1])(t_comm *data);
-	char	**built_in;
-	int		x;
-	int		back;
-
-	init_env(env_or, comm);
-	if (!(built_in = init_tab(ft_tab)))
-		ft_quit("bash: erreur built_in", 2, comm);
-	while (1)
-	{
-		print_prompt(comm);
-		comm = get_comms(comm);
-		back = exec_comms(comm, built_in, ft_tab);
-		delete_comms(comm);
-		push_env();
-	}
-	ft_quit("test", 1, comm);
-	return (SUCCESS);
+	ft_putendl_fd(msg, outp);
+	exit(1);
 }

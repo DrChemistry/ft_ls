@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_count_char.c                                    :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/15 12:18:36 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/10/28 16:07:09 by adi-rosa         ###   ########.fr       */
+/*   Created: 2018/10/24 15:28:51 by adi-rosa          #+#    #+#             */
+/*   Updated: 2018/10/24 15:28:52 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_count_char(char *str, char c)
+int			ft_echo(t_comm *data)
 {
 	int x;
-	int b;
+	int flags;
 
-	x = -1;
-	b = 0;
-	while (str[++x])
-		if (str[x] == c)
-			b++;
-	return (b);
+	x = 1;
+	flags = 0;
+	if (data->tab[1] && ft_strcmp(data->tab[1], "-n") == 0)
+	{
+		flags = 1;
+		x = 2;
+	}
+	while (data->tab[x])
+	{
+		ft_putstr(data->tab[x++]);
+		ft_putstr(" ");
+	}
+	if (flags == 0)
+		ft_putchar('\n');
+	return (SUCCESS);
 }
