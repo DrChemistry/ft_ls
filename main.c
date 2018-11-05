@@ -48,7 +48,8 @@ int		main(int ac, char **av, char **env_or)
 	{
 		print_prompt(comm);
 		comm = get_comms(comm);
-		back = exec_comms(comm, built_in, ft_tab);
+		if (comm->tab[0])
+			back = exec_comms(comm, built_in, ft_tab);
 		delete_comms(comm);
 		push_env();
 	}
