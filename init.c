@@ -23,29 +23,27 @@ void	init_env(char **tab, t_comm *comm)
 		ft_quit("minishell: erreur malloc", 2, comm);
 	if (!(env->env = ft_tab_dup(tab)))
 		ft_quit("minishell: erreur malloc", 2, comm);
-	while (tab[x])
-		++x;
+	x = ft_tablen(tab);
 	if (!(env->variable = malloc(sizeof(char *) * (x + 1)))
 			|| !(env->value = malloc(sizeof(char *) * (x + 1))))
 		ft_quit("minishell: erreur malloc", 2, comm);
-	x = 0;
-	while (tab[x])
+	x = -1;
+	while (tab[++x])
 	{
-		if (!(tmp = ft_strsplit(tab[x], '=')))
+		if (!(tmp = ft_strsplit(tab[x], '=')) ||
+		!(env->variable[x] = ft_strdup(tmp[0])) ||
+		!(env->value[x] = ft_strdup(tmp[1])))
 			ft_quit("minishell: erreur malloc", 2, comm);
-		env->variable[x] = tmp[0];
-		env->value[x++] = tmp[1];
+			free(tmp[0]);
+			free(tmp[1]);
+			free(tmp);
 	}
 	env->variable[x] = NULL;
 	env->value[x] = NULL;
 }
 
-char	**init_tab(int (*ft_tab[])(t_comm *data))
+char	**init_tab(int (*ft_tab[])(t_comm *data), char **tab)
 {
-	char	**tab;
-
-	if (!(tab = malloc(sizeof(char *) * (NB_BUILT_IN + 1))))
-		return (NULL);
 	tab[0] = "echo";
 	tab[1] = "cd";
 	tab[2] = "setenv";

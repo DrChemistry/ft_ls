@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_tabdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adi-rosa <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/24 14:17:41 by adi-rosa          #+#    #+#             */
-/*   Updated: 2018/10/26 13:57:28 by adi-rosa         ###   ########.fr       */
+/*   Created: 2018/11/06 16:49:40 by adi-rosa          #+#    #+#             */
+/*   Updated: 2018/11/06 16:49:41 by adi-rosa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <stdlib.h>
+#include "libft.h"
 
-int		ft_exit(t_comm *data)
+void ft_tabdel(char **tab)
 {
-	ft_quit("exit12", 1, data);
-	return (0);
-}
+	int x;
 
-void	ft_quit(char *msg, int outp, t_comm *comm)
-{
-	int		x;
-	t_comm	*tmp;
-
-	delete_comms(comm);
-	ft_putendl_fd(msg, outp);
-	while (1)
-	;
-	exit(1);
+	x = 0;
+	while (tab && tab[x])
+		free(tab[x++]);
+	free(tab);
 }

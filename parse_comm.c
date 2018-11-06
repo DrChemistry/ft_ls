@@ -59,8 +59,9 @@ char	**ft_minishell_split(char *str, t_comm *comm)
 			++x;
 	}
 	tab[b] = NULL;
-	if (tab[b - 1][0] == '\0')
+	if (b > 0 && tab[b - 1][0] == '\0')
 		tab[b - 1] = NULL;
+	free(str);
 	return (tab);
 }
 

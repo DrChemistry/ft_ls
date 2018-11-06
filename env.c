@@ -36,9 +36,10 @@ void	set_env(char *str, int pos, t_comm *comm)
 		if (!(tab[x++] = ft_strdup(str)))
 			ft_quit("minishell: erreur malloc", 2, comm);
 		tab[x] = NULL;
+		free(env->env);
 		env->env = tab;
+		push_env2();
 	}
-	push_env2();
 }
 
 int		ft_setenv(t_comm *data)

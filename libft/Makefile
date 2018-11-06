@@ -68,6 +68,7 @@ SRC	=	ft_atoi.c		\
 		ft_findchar.c	\
 		ft_tab_dup.c	\
 		ft_count_char.c	\
+		ft_tabdel.c		\
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -81,13 +82,12 @@ all:	$(NAME)
 
 $(NAME):	$(OBJ)
 	ar rc $(NAME) $(OBJ)
-	@echo
 
 clean:
-	$(RM) $(OBJ)
+	@$(RM) $(OBJ)
 
 fclean: clean
-	$(RM) $(OBJ) $(NAME)
+	@$(RM) $(OBJ) $(NAME)
 
 re: fclean all
 

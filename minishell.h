@@ -50,6 +50,7 @@ typedef struct	s_env
 struct s_env	*env;
 
 void			ft_quit(char *msg, int outp, t_comm *comm);
+void	delete_comms(t_comm *comm);
 
 int				ft_cd(t_comm *data);
 int				ft_echo(t_comm *data);
@@ -58,7 +59,7 @@ int				ft_unsetenv(t_comm *data);
 int				ft_env(t_comm *data);
 int				ft_exit(t_comm *data);
 
-char			**init_tab(int (*ft_tab[])(t_comm *data));
+char			**init_tab(int (*ft_tab[])(t_comm *data), char **tab);
 void			init_env(char **tab, t_comm *comm);
 
 void			print_prompt(t_comm *comm);

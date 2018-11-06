@@ -78,6 +78,7 @@ int	exec_comms(t_comm *com, char **bn, int (*fab[])(t_comm *data))
 			back = built_in(com, bn, fab);
 			if (back == 84)
 				back = is_bin(com);
+			//printf("test\n");
 			if (back == 84)
 				ft_putendl_fd("Command not found", 2);
 		}

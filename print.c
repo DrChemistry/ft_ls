@@ -24,6 +24,7 @@ void	print_prompt(t_comm *comm)
 	x = 1;
 	while (!(getcwd(buf, 128 * x)))
 	{
+		free(buf);
 		if (!(buf = malloc(sizeof(char) * (128 * x))))
 			ft_quit("bash: erreur allocution memoir", 2, comm);
 		++x;
@@ -32,4 +33,5 @@ void	print_prompt(t_comm *comm)
 	ft_putstr(buf);
 	ft_putstr(RESET);
 	write(1, " $>", 3);
+	free(buf);
 }

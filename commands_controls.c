@@ -51,7 +51,8 @@ t_comm	*fill_list(char **tab, t_comm *comm)
 	{
 		if (!comm && !(comm = malloc(sizeof(t_comm) * 1)))
 			ft_quit("bash: malloc error", 2, comm);
-		comm->ori = tab[x++];
+		if (!(comm->ori = ft_strdup(tab[x++])))
+			ft_quit("bash: malloc error", 2, comm);
 		if (tmp)
 			tmp->next = comm;
 		comm->last = tmp;
@@ -71,14 +72,25 @@ t_comm	*get_comms(t_comm *comm)
 	char	**tab;
 	char	*tmp;
 	int		x;
-	int		b;
 
-	if (!(comm = malloc(sizeof(t_comm) * 1)))
+	line = NULL;
+	tab = NULL;
+	if (!(comm = malloc(sizeof(t_comm) * 1)) || get_next_line(0, &line) == -1)
 		ft_quit("bash: malloc error", 2, comm);
-	if (get_next_line(0, &line) == -1)
-		ft_quit("bash: malloc error", 2, comm);
-	tab = ft_minishell_split(check_str(line, comm), comm);
+	if (line)
+		tab = ft_minishell_split(check_str(line, comm), comm);
+	if (!tab || !tab[0])
+	{
+		if (tab)
+			free(tab);
+		free(comm);
+		return (NULL);
+	}
 	comm = fill_list(tab, comm);
+	x = 0;
+	while (tab[x])
+		free(tab[x++]);
+	free(tab);
 	parse_comm(comm);
 	return (comm);
 }

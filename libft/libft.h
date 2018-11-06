@@ -71,5 +71,6 @@ void	ft_putnbr_fd(int n, int fd);
 int		ft_findchar(char *str, char c);
 char	**ft_tab_dup(char **tab);
 int		ft_count_char(char *str, char c);
+void ft_tabdel(char **tab);
 
 #endif

@@ -50,13 +50,8 @@ void	push_env2(void)
 	char	**tmp;
 
 	x = 0;
-	while (env->variable[x])
-	{
-		free(env->variable[x]);
-		free(env->value[x++]);
-	}
-	free(env->variable);
-	free(env->value);
+	ft_tabdel(env->variable);
+	ft_tabdel(env->value);
 	x = ft_tablen(env->env);
 	if (!(env->variable = malloc(sizeof(char *) * (x + 1)))
 			|| !(env->value = malloc(sizeof(char *) * (x + 1))))
@@ -68,6 +63,7 @@ void	push_env2(void)
 			ft_quit("minishell: erreur malloc", 2, NULL);
 		env->variable[x] = tmp[0];
 		env->value[x++] = tmp[1];
+		free(tmp);
 	}
 	env->variable[x] = NULL;
 	env->value[x] = NULL;

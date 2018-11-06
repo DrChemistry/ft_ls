@@ -17,7 +17,7 @@
 
 int	fu(char *save, char **line, int x, int b)
 {
-	if (!(line[0] = malloc(sizeof(char) * x + 1)))
+	if (!(line[0] = ft_strnew(x + 1)))
 		return (-1);
 	line[0][x] = '\0';
 	b = x;

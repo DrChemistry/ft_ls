@@ -48,8 +48,10 @@ int	search_dir(char *bins, DIR *dir, t_comm *comm)
 	while ((dirent = readdir(dir)))
 		if (ft_strcmp(dirent->d_name, comm->tab[0]) == 0)
 		{
+			closedir(dir);
 			return (s_d2(bins, dirent, comm));
 		}
+	closedir(dir);
 	return (FAILURE);
 }
 
@@ -69,16 +71,34 @@ int	exec_comm(char **tab)
 	return (SUCCESS);
 }
 
+int exec_binary(t_comm *comm)
+{
+	struct stat sta;
+
+	if (is_dir(comm->tab[0]) == SUCCESS)
+	{
+		ft_putendl_fd("This is a directory", 2);
+		return (FAILURE);
+	}
+	if (lstat(comm->tab[0], &sta) == -1)
+	{
+		ft_putendl_fd("No such file or directory", 2);
+		return (FAILURE);
+	}
+	if (sta.st_mode & S_IXUSR)
+		return (exec_comm(comm->tab));
+	return (FAILURE);
+}
+
 int	is_bin(t_comm *comm)
 {
 	int		x;
 	char	**bins;
 	DIR		*dir;
 
-	x = 0;
-	while (env->variable[x] && ft_strcmp(env->variable[x], "PATH") != 0)
-		x++;
-	if (!env->variable[x])
+	if (comm->tab[0][0] == '/')
+		return (exec_binary(comm));
+	if ((x = get_env("PATH")) == -1)
 		return (FAILURE);
 	if (!(bins = ft_strsplit(env->value[x], ':')))
 		ft_quit("minishell: erreur malloc", 2, comm);
@@ -89,11 +109,11 @@ int	is_bin(t_comm *comm)
 			ft_quit("minishell: erreur opendir dans le path", 2, comm);
 		if (search_dir(bins[x], dir, comm) == SUCCESS)
 		{
-			ft_memdel((void **)bins);
+			ft_tabdel(bins);
 			return (exec_comm(comm->tab));
 		}
 		++x;
 	}
-	ft_memdel((void **)bins);
+	ft_tabdel(bins);
 	return (84);
 }

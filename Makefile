@@ -14,6 +14,8 @@ MAKE	=	make -C ./libft/
 
 RM	=	rm -f
 
+ECHO	= echo
+
 SRC	=	main.c							\
 			exit.c							\
 			init.c							\
@@ -41,14 +43,17 @@ all:	$(NAME)
 $(NAME):	$(OBJ)
 	$(MAKE)
 	gcc -Wall -Wextra -Werror -o $(NAME) $(OBJ) $(LIB) $(INCLUDE)
+	@$(ECHO) "\033[33;32m=== Compilation\t\t\tDONE ===\033[0m"
 
 clean:
-	$(MAKE) clean
-	$(RM) $(OBJ)
+	@$(MAKE) clean
+	@$(RM) $(OBJ)
+	@$(ECHO) "\033[33;31m=== Object\t\t\tDELETED===\033[0m"
 
 fclean: clean
-	$(RM) $(NAME)
-	$(MAKE) fclean
+	@$(RM) $(NAME)
+	@$(MAKE) fclean
+	@$(ECHO) "\033[33;31m=== Binary\t\t\tDELETED===\033[0m"
 
 re: fclean all
 
